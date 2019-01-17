@@ -1,6 +1,6 @@
 .PHONY:test
-test:tcpService tcpClient
-tcpService:tcpService.cpp
+test:tcpServer tcpClient
+tcpServer:tcpServer.cpp
 	g++ $^ -o $@
 tcpClient:tcpClient.cpp
 	g++ $^ -o $@

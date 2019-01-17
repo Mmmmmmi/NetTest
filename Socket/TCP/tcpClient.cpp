@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    std::string serviceip = argv[1];
-    uint16_t serviceport = atoi(argv[2]);
+    std::string serverip = argv[1];
+    uint16_t serverport = atoi(argv[2]);
 
 
     //创建套接字
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     //客户端不推荐绑定
 
     //连接
-    CHECK_RET(tcpclient.connectSocket(serviceip, serviceport));
+    CHECK_RET(tcpclient.connectSocket(serverip, serverport));
 
     while(1) {
         //发送数据
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
         memset(buf, 0, 1024);
 
         tcpclient.receiveSocket(buf, 1023);
-        printf("Service Say : %s\n", buf);
+        printf("Server Say : %s\n", buf);
     }
     tcpclient.closeSocket();
     return 0;

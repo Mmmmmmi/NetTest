@@ -3,7 +3,7 @@
 int main(int argc, char* argv[])
 {
 
-    TcpSocket tcpservice;
+    TcpSocket tcpserver;
     
     if (argc != 3) {
         printf("error for input");
@@ -13,21 +13,21 @@ int main(int argc, char* argv[])
     uint16_t port = atoi(argv[2]);
 
     //创建套接字
-    CHECK_RET(tcpservice.creatSocket());
+    CHECK_RET(tcpserver.creatSocket());
 
     //绑定套接字
-    CHECK_RET(tcpservice.bindSocket(ip, port));
+    CHECK_RET(tcpserver.bindSocket(ip, port));
 
 
     //监听
-    CHECK_RET(tcpservice.listenSocket(5));
+    CHECK_RET(tcpserver.listenSocket(5));
 
     while(1) {
 
         TcpSocket newsocket;
 
         //获取新的文件描述符 
-        if (tcpservice.acceptSocket(newsocket) == false) {
+        if (tcpserver.acceptSocket(newsocket) == false) {
             continue;
         }
         
@@ -39,14 +39,14 @@ int main(int argc, char* argv[])
 
 
         //发送
-        printf("Service Say : ");     
+        printf("Server Say : ");     
         fflush(stdout);
         memset(buf, 0, 1024);
         scanf("%s", buf);
         newsocket.sendSocket(buf, strlen(buf));
         
     }
-    tcpservice.closeSocket();
+    tcpserver.closeSocket();
     
     return 0;
 }
