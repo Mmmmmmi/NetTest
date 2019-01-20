@@ -1,4 +1,0 @@
-/usr/lib64/libstdc++.so.6.0.19
-/usr/share/gdb/auto-load/usr/lib64/libstdc++.so.6.0.19-gdb.pyo
-/usr/share/gdb/auto-load/usr/lib64/libstdc++.so.6.0.19-gdb.pyc
-/usr/share/gdb/auto-load/usr/lib64/libstdc++.so.6.0.19-gdb.py

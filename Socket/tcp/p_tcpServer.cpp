@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
 
                     //发送
-                    printf("Server Say : ");     
+                    printf("Server  Say : ");     
                     fflush(stdout);
                     memset(buf, 0, 1024);
                     scanf("%s", buf);
