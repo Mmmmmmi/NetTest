@@ -3,9 +3,9 @@
  *
  */
 
-
-#include <sys/wait.h>
 #include "tcpHead.h"
+#include <sys/wait.h>
+#include <cstdlib>
 
 int main(int argc, char* argv[])
 {
@@ -31,6 +31,12 @@ int main(int argc, char* argv[])
 
     while(1) {
 
+        TcpSocket newsocket;
+        //获取新的文件描述符 
+        if (tcpserver.acceptSocket(newsocket) == false) {
+            continue;
+        }
+
         int forkret = fork();
         if (forkret == -1) {
             perror("error for fork");
@@ -43,13 +49,6 @@ int main(int argc, char* argv[])
                 return -1;
             }else if (retfork == 0){
                 //第二层子进程
-
-                TcpSocket newsocket;
-
-                //获取新的文件描述符 
-                if (tcpserver.acceptSocket(newsocket) == false) {
-                    continue;
-                }
 
                 char buf[1024] = {0}; 
                 while(1) {
@@ -73,6 +72,7 @@ int main(int argc, char* argv[])
             }
 
         }else {
+            newsocket.closeSocket();
             wait(NULL);
         }
     }
