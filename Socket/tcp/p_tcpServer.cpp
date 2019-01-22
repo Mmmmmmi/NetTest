@@ -7,17 +7,27 @@
 #include <sys/wait.h>
 #include <cstdlib>
 
+void sigaction(int sig)
+{
+    while(waitpid(-1, NULL, WNOHANG) > 0)
+    {}
+}
+
+
 int main(int argc, char* argv[])
 {
 
     TcpSocket tcpserver;
     
     if (argc != 3) {
-        printf("error for input");
+        printf("error for input\n");
         return -1;
     }
     std::string ip = argv[1];
     uint16_t port = atoi(argv[2]);
+
+    //当孙子进程返回时，才执行wait操作;
+    signal(SIGCHLD, sigaction);
 
     //创建套接字
     CHECK_RET(tcpserver.creatSocket());
