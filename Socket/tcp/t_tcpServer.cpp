@@ -10,11 +10,36 @@
 
 #include "tcpHead.h"
 
+void *thread_do(void *arg)
+{
+    TcpSocket *tcpsocket = (TcpSocket*)arg;
+    while(1) {
+
+        char buf[1024] = {0}; 
+
+        //接收
+        tcpsocket->receiveSocket(buf, 1023);
+        printf("Client  Say :  %s\n", buf);
+
+
+        //发送
+        printf("Server  Say : ");     
+        fflush(stdout);
+        memset(buf, 0, 1024);
+        scanf("%s", buf);
+        tcpsocket->sendSocket(buf, strlen(buf));
+    }
+    tcpsocket->closeSocket();
+    return NULL;
+}
+
+
+
 int main(int argc, char* argv[])
 {
 
     TcpSocket tcpserver;
-    
+
     if (argc != 3) {
         printf("error for input");
         return -1;
@@ -34,34 +59,21 @@ int main(int argc, char* argv[])
     CHECK_RET(tcpserver.listenSocket(5));
 
 
-    //获取新的文件描述符, 如果直接放到循环里面，并且始终只有一个客户端的话
-    //在第二次循环进来时，就会陷入阻塞 
-    TcpSocket newsocket;
-    CHECK_RET(tcpserver.acceptSocket(newsocket));
-
-
     //进行数据沟通
-    
     while(1) {
 
+        TcpSocket *newsocket = new TcpSocket;
 
-        char buf[1024] = {0}; 
+        //如果没有客户端就阻塞，如果完成队列满了就返沪错误
+        if (tcpserver.acceptSocket(*newsocket) == false) {
+            continue;
+        }
 
-        //接收
-        newsocket.receiveSocket(buf, 1023);
-        printf("Client  Say :  %s\n", buf);
-
-
-        //发送
-        printf("Server  Say : ");     
-        fflush(stdout);
-        memset(buf, 0, 1024);
-        scanf("%s", buf);
-        newsocket.sendSocket(buf, strlen(buf));
-        
+        pthread_t tid; 
+        pthread_create(&tid, NULL, thread_do, (void*)newsocket);
+        pthread_detach(tid);
     }
     tcpserver.closeSocket();
-    
     return 0;
 }
 
