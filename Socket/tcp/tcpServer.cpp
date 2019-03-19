@@ -5,9 +5,6 @@
  */
 
 
-
-
-
 #include "tcpHead.h"
 
 int main(int argc, char* argv[])
@@ -49,7 +46,7 @@ int main(int argc, char* argv[])
 
         //接收
         newsocket.receiveSocket(buf, 1023);
-        printf("Client  Say :  %s\n", buf);
+        printf("Client  Say : %s\n", buf);
 
 
         //发送
