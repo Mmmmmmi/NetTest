@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
         }
         int selectret = select(maxfd, &clientset, NULL, NULL, &waittime);
         if (selectret < 0) {
-            perror("select error");
+            perror("select error\n");
             exit(0);
         }else if (selectret == 0) {
             printf("time out\n");
