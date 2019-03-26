@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     TcpSocket tcpserver;
     
     if (argc != 3) {
-        printf("error for input");
+        printf("error for input!\n");
         return -1;
     }
     std::string ip = argv[1];
@@ -61,4 +61,3 @@ int main(int argc, char* argv[])
     
     return 0;
 }
-
