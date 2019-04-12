@@ -1,2 +1,2 @@
-# NetTest
-网络编程学习
+套接字编程练习
+包括：TCP   UDP HTTP 等

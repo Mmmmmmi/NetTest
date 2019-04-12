@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 
     if (argc != 3) {
         printf("error for input!\n");
-        return -1;
+        exit(0);
     }
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
