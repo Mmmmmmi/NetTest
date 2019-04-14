@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <sys/poll.h>
@@ -80,11 +81,8 @@ int main(int argc, char* argv[])
     //添加第一个listen的fd
     fd_list[0].fd = sockfd;
     fd_list[0].events = POLLIN;
-    struct timeval timeout;
-    timeout.tv_sec = 3000;
-
     for(;;) {
-        int pollret = poll(fd_list, sizeof(fd_list)/sizeof(fd_list[0]), timeout.tv_sec);
+        int pollret = poll(fd_list, sizeof(fd_list)/sizeof(fd_list[0]), 3000);
         if (pollret < 0) {
             perror("error for poll!\n");
             exit(0);
@@ -96,7 +94,11 @@ int main(int argc, char* argv[])
         for (int i = 0; i < 1024; i++) {
             if (fd_list[i].fd == -1) {
                 continue;
-            }else if (fd_list[i].fd == sockfd) {
+            }
+            if (!(fd_list[i].revents & POLLIN)) {
+                continue;
+            }
+            if (fd_list[i].fd == sockfd) {
                 //有新的连接加入
                 struct sockaddr_in cliaddr; //客户端的连接来了
                 int clifd = accept(sockfd, (struct sockaddr*)&cliaddr, &len);        
@@ -116,8 +118,7 @@ int main(int argc, char* argv[])
                     close(fd_list[i].fd);        
                     fd_list[i].fd = -1;
                 }else {
-                    printf("ClientSay: %s", Buffer);
-                    memset(Buffer, 0, 1024);
+                    printf("ClientSay: %s\n", Buffer);
                     write(fd_list[i].fd, "hello world!\n", strlen("hello world!\n"));
                 }
             }

@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     //创建套接字
     int socketfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); 
     if (socketfd == -1) {
-        perror("error for creatsocket!\n");
+        perror("error for socket!\n");
         exit(0);
     }
 
